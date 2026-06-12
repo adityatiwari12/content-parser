@@ -2,7 +2,6 @@
 
 End-to-end research operating system for discovery, literature review, writing, analysis, compliance, collaboration, and publication readiness.
 
-**Live demo (frontend):** [https://web-ten-delta-78.vercel.app](https://web-ten-delta-78.vercel.app)
 
 ## Architecture
 
