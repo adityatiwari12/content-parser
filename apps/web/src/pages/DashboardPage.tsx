@@ -5,26 +5,26 @@ import { runMockAction } from '@/lib/actions'
 import { useProjectStore } from '@/stores/project'
 
 const suggestions = [
-  { label: 'Choose a research topic', prompt: 'Help me choose a focused first research project.' },
-  { label: 'Find starter papers', to: '/discovery' },
-  { label: 'Generate literature review', to: '/literature-review' },
-  { label: 'Suggest research gaps', to: '/gaps' },
-  { label: 'Explain methodology', prompt: 'Explain how I should design a rigorous research methodology.' },
+  { label: 'Shape my research question', prompt: 'Help me turn my broad research interest into a focused research question.' },
+  { label: 'Survey the literature field', to: '/discovery' },
+  { label: 'Synthesize what is known', to: '/literature-review' },
+  { label: 'Reveal open questions', to: '/gaps' },
+  { label: 'Interrogate the method', prompt: 'Help me reason through a rigorous methodology for this project.' },
 ]
 
 const discoveries = [
-  { text: '3 new papers match your research on transformer-based climate risk modeling.', to: '/discovery', action: 'Review papers' },
-  { text: 'A benchmark dataset for flood-risk forecasting is now available in your adjacent domain.', to: '/datasets', action: 'Open dataset' },
-  { text: 'Citation opportunity detected for retrieval-augmented scientific reasoning.', to: '/citations', action: 'Check citations' },
-  { text: 'Methodology conflict identified between graph-based and transformer-based evaluation protocols.', to: '/peer-review', action: 'Inspect conflict' },
-  { text: 'Research trend emerging around foundation models for regional climate adaptation.', to: '/gaps', action: 'Explore trend' },
+  { text: 'New papers may change the framing of your literature review.', to: '/discovery', action: 'Read the landscape' },
+  { text: 'A benchmark dataset could strengthen the evidence base for this inquiry.', to: '/datasets', action: 'Inspect dataset' },
+  { text: 'A citation thread suggests a stronger theoretical foundation.', to: '/citations', action: 'Review evidence' },
+  { text: 'Two methodological traditions disagree on how the problem should be evaluated.', to: '/peer-review', action: 'Examine tension' },
+  { text: 'An adjacent research signal is emerging that may become a novel direction.', to: '/gaps', action: 'Open question' },
 ]
 
 const workflows = [
-  { title: 'Literature Review', note: 'Continue drafting', to: '/literature-review', detail: 'Consensus and contradictions are ready to refine.' },
-  { title: 'Writing Studio', note: 'Resume manuscript', to: '/writing', detail: 'Detailed research paper draft is available.' },
-  { title: 'Peer Review', note: 'Feedback available', to: '/peer-review', detail: 'Reviewer comments are ready for the methods section.' },
-  { title: 'Knowledge Graph', note: 'New relationships discovered', to: '/graph', detail: 'Citation links connect two adjacent domains.' },
+  { title: 'Read', note: 'Continue the literature field', to: '/literature-review', detail: 'Consensus, contradictions, and open questions are ready to refine.' },
+  { title: 'Write', note: 'Return to the manuscript', to: '/writing', detail: 'A research paper draft can grow from your notes and evidence.' },
+  { title: 'Review', note: 'Interrogate the argument', to: '/peer-review', detail: 'Use reviewer feedback to strengthen claims and methods.' },
+  { title: 'Map', note: 'Follow relationships', to: '/graph', detail: 'Citation links connect adjacent ideas and possible contributions.' },
 ]
 
 export default function DashboardPage() {
@@ -36,8 +36,8 @@ export default function DashboardPage() {
   const projectList = projects as Array<{ id: string; name: string; description?: string }>
   const activeProject = projectList.find((project) => project.id === activeProjectId) || projectList[0]
   const hasProjects = Boolean(activeProject)
-  const projectName = activeProject?.name || 'Start your first research project'
-  const projectDescription = activeProject?.description || 'Create a workspace, add a research question, then connect papers, datasets, notes, and experiments.'
+  const projectName = activeProject?.name || 'Begin with a research question'
+  const projectDescription = activeProject?.description || 'Axiom starts with an inquiry, then gathers papers, evidence, notes, methods, and drafts around it.'
 
   function askCopilot(prompt: string) {
     localStorage.setItem('axiom-copilot-draft', prompt)
@@ -59,7 +59,7 @@ export default function DashboardPage() {
           <div className="flex flex-wrap items-start justify-between gap-8">
             <div>
               <p className="font-mono text-xs uppercase tracking-[0.24em] text-[#5F6368] dark:text-zinc-500">
-                {hasProjects ? 'Current research desk' : 'Welcome to Axiom Lab'}
+                {hasProjects ? 'Current inquiry' : 'A quiet place to begin'}
               </p>
               <h1 className="mt-6 max-w-3xl font-serif text-6xl font-medium leading-[0.95] tracking-[-0.045em] md:text-8xl">
                 {projectName}
@@ -77,20 +77,20 @@ export default function DashboardPage() {
             <p className="max-w-2xl text-2xl leading-10 text-[#5F6368] dark:text-zinc-400">
               {hasProjects
                 ? projectDescription
-                : 'No past projects, usage history, billing plan, or fake activity yet. Your research desk starts clean.'}
+                : 'No fake activity, no usage counters, no admin panel. Start with a question and let the research environment unfold around it.'}
             </p>
             <div className="flex flex-col gap-3 sm:flex-row lg:justify-end">
               <button
                 onClick={() => hasProjects ? navigate('/literature-review') : createProject()}
                 className="rounded-full bg-[#101010] px-7 py-4 text-sm font-medium text-white transition-transform hover:-translate-y-0.5 dark:bg-white dark:text-zinc-950"
               >
-                {hasProjects ? 'Continue Research' : 'Start Research'}
+                {hasProjects ? 'Continue the inquiry' : 'Begin inquiry'}
               </button>
               <button
                 onClick={() => navigate('/workspace')}
                 className="rounded-full border border-black/10 bg-white px-7 py-4 text-sm font-medium text-[#101010] transition-transform hover:-translate-y-0.5 dark:border-white/10 dark:bg-zinc-900 dark:text-zinc-100"
               >
-                Open Workspace
+                Open project library
               </button>
             </div>
           </div>
@@ -98,12 +98,12 @@ export default function DashboardPage() {
       </section>
 
       <section className="rounded-[2rem] border border-black/10 bg-white/75 p-5 shadow-[0_25px_80px_rgba(16,16,16,0.06)] backdrop-blur dark:border-white/10 dark:bg-zinc-950/80 md:p-7">
-        <p className="mb-4 font-serif text-3xl">Research Copilot</p>
+        <p className="mb-4 font-serif text-3xl">Reason with the work</p>
         <button
           onClick={() => askCopilot(hasProjects ? `What should I work on next in ${projectName}?` : 'Help me create my first research project.')}
           className="w-full rounded-[1.5rem] border border-black/10 bg-[#F8F8F5] px-6 py-6 text-left text-lg leading-8 text-[#5F6368] transition-colors hover:bg-white dark:border-white/10 dark:bg-zinc-900 dark:text-zinc-400 dark:hover:bg-zinc-800"
         >
-          Ask about papers, citations, datasets, methodologies, research gaps, or experiments...
+          Ask what changed, what evidence matters, what contradicts the claim, or what to do next...
         </button>
         <div className="mt-4 flex flex-wrap gap-2">
           {suggestions.map((item) => (
@@ -125,7 +125,7 @@ export default function DashboardPage() {
               {hasProjects ? 'Since your last visit' : 'First steps'}
             </p>
             <h2 className="mt-2 font-serif text-5xl tracking-[-0.04em]">
-              {hasProjects ? 'Recent discoveries' : 'Set up your research desk'}
+              {hasProjects ? 'What changed recently' : 'Begin the research journey'}
             </h2>
           </div>
           <Link to="/discovery" className="hidden rounded-full bg-white px-4 py-2 text-sm text-[#5F6368] shadow-sm dark:bg-zinc-900 dark:text-zinc-400 md:inline-flex">
@@ -134,9 +134,9 @@ export default function DashboardPage() {
         </div>
         <div className="space-y-3">
           {(hasProjects ? discoveries : [
-            { text: 'Create a project to give your research a home.', to: '/workspace', action: 'Create project' },
-            { text: 'Search for starter papers and add the strongest sources to your workspace.', to: '/discovery', action: 'Find papers' },
-            { text: 'Ask Copilot to narrow a broad topic into researchable questions.', to: '/copilot', action: 'Ask Copilot' },
+            { text: 'Give the inquiry a home before adding evidence.', to: '/workspace', action: 'Create inquiry' },
+            { text: 'Survey the research landscape and collect the strongest sources.', to: '/discovery', action: 'Read landscape' },
+            { text: 'Use conversation to narrow a broad interest into a researchable question.', to: '/copilot', action: 'Reason with Copilot' },
           ]).map((item) => (
             <button
               key={item.text}
@@ -152,17 +152,17 @@ export default function DashboardPage() {
 
       <section>
         <p className="font-mono text-xs uppercase tracking-[0.24em] text-[#5F6368] dark:text-zinc-500">
-          {hasProjects ? 'Pick up where you left off' : 'Begin with'}
+          {hasProjects ? 'Suggested next moves' : 'Begin with'}
         </p>
         <h2 className="mt-2 font-serif text-5xl tracking-[-0.04em]">
-          {hasProjects ? 'Continue working' : 'Starter workflows'}
+          {hasProjects ? 'Continue the research' : 'A guided first path'}
         </h2>
         <div className="mt-7 grid gap-4 md:grid-cols-2 xl:grid-cols-4">
           {(hasProjects ? workflows : [
-            { title: 'Discovery', note: 'Find first papers', to: '/discovery', detail: 'Search arXiv, Semantic Scholar-style mock data, and source links.' },
-            { title: 'Copilot', note: 'Shape your question', to: '/copilot', detail: 'Turn a broad topic into a focused research direction.' },
-            { title: 'Workspace', note: 'Create project', to: '/workspace', detail: 'Make your first persistent research workspace.' },
-            { title: 'Writing', note: 'Draft later', to: '/writing', detail: 'Generate a detailed paper after your topic is ready.' },
+            { title: 'Orient', note: 'Name the inquiry', to: '/workspace', detail: 'Create a persistent place for evidence and notes.' },
+            { title: 'Discover', note: 'Read the field', to: '/discovery', detail: 'Move through papers as a research landscape, not a search dump.' },
+            { title: 'Reason', note: 'Ask better questions', to: '/copilot', detail: 'Use conversation to uncover assumptions and contradictions.' },
+            { title: 'Synthesize', note: 'Draft when ready', to: '/writing', detail: 'Turn evidence and notes into a publishable argument.' },
           ]).map((item) => (
             <Link
               key={item.title}
