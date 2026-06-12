@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: axiom-api
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: axiom-api
+  template:
+    metadata:
+      labels:
+        app: axiom-api
+    spec:
+      containers:
+        - name: api
+          image: axiom-lab/api:latest
+          ports:
+            - containerPort: 8000
+          envFrom:
+            - secretRef:
+                name: axiom-secrets

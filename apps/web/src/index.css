@@ -1,0 +1,216 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply bg-[#F8F8F5] text-[#101010] font-sans antialiased;
+  }
+
+  button,
+  a,
+  input,
+  textarea,
+  summary {
+    @apply outline-none;
+  }
+
+  button,
+  a,
+  summary {
+    @apply transition-all;
+  }
+
+  button:not(:disabled),
+  summary {
+    cursor: pointer;
+  }
+
+  button:disabled {
+    cursor: not-allowed;
+  }
+
+  button:focus-visible,
+  a:focus-visible,
+  input:focus-visible,
+  textarea:focus-visible,
+  summary:focus-visible {
+    outline: 2px solid rgba(26, 54, 93, 0.65);
+    outline-offset: 3px;
+  }
+
+  body.dark {
+    @apply bg-[#080808] text-zinc-100;
+  }
+
+  .light body,
+  body.light {
+    @apply bg-[#F8F8F5] text-[#101010];
+  }
+}
+
+@layer utilities {
+  .axiom-grain {
+    background-image:
+      radial-gradient(circle at 20% 10%, rgba(26, 54, 93, 0.08), transparent 28rem),
+      radial-gradient(circle at 80% 12%, rgba(16, 16, 16, 0.04), transparent 26rem),
+      linear-gradient(rgba(16, 16, 16, 0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(16, 16, 16, 0.03) 1px, transparent 1px);
+    background-size: 100% 100%, 100% 100%, 72px 72px, 72px 72px;
+  }
+
+  .dark-institute {
+    background:
+      radial-gradient(circle at 25% 20%, rgba(248, 248, 245, 0.08), transparent 28rem),
+      radial-gradient(circle at 70% 70%, rgba(96, 165, 250, 0.08), transparent 24rem),
+      #09090b;
+  }
+
+  .slow-drift {
+    animation: slow-drift 18s ease-in-out infinite alternate;
+  }
+
+  .slow-drift-reverse {
+    animation: slow-drift-reverse 22s ease-in-out infinite alternate;
+  }
+
+  .citation-pulse {
+    animation: citation-pulse 7s ease-in-out infinite;
+  }
+
+  .orientation-compact {
+    scroll-padding-top: 0.75rem;
+  }
+}
+
+@keyframes slow-drift {
+  from {
+    transform: translate3d(-8px, 10px, 0) rotate(-1deg);
+  }
+  to {
+    transform: translate3d(10px, -12px, 0) rotate(1deg);
+  }
+}
+
+@keyframes slow-drift-reverse {
+  from {
+    transform: translate3d(8px, -8px, 0) rotate(1deg);
+  }
+  to {
+    transform: translate3d(-12px, 10px, 0) rotate(-1deg);
+  }
+}
+
+@keyframes citation-pulse {
+  0%,
+  100% {
+    opacity: 0.18;
+  }
+  50% {
+    opacity: 0.45;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+@media (orientation: landscape) and (max-height: 720px) {
+  .orientation-compact {
+    padding-top: 0.75rem !important;
+    padding-bottom: 0.75rem !important;
+  }
+}
+
+body.light .bg-zinc-950,
+body.light .bg-zinc-900,
+body.light .bg-zinc-900\/50,
+body.light .bg-zinc-900\/60,
+body.light .bg-zinc-900\/70,
+body.light .bg-zinc-900\/80,
+body.light .bg-zinc-900\/30 {
+  background-color: rgba(255, 255, 255, 0.72) !important;
+}
+
+body.light .bg-zinc-800 {
+  background-color: rgba(16, 16, 16, 0.06) !important;
+}
+
+body.light .border-zinc-800,
+body.light .border-zinc-700,
+body.light .border-zinc-600 {
+  border-color: rgba(0, 0, 0, 0.10) !important;
+}
+
+body.light .text-zinc-100,
+body.light .text-zinc-200,
+body.light .text-zinc-300 {
+  color: #101010 !important;
+}
+
+body.light .text-zinc-400,
+body.light .text-zinc-500,
+body.light .text-zinc-600 {
+  color: #5F6368 !important;
+}
+
+body.light input,
+body.light textarea {
+  color: #101010;
+}
+
+body.light input::placeholder,
+body.light textarea::placeholder {
+  color: rgba(95, 99, 104, 0.75);
+}
+
+body.dark .axiom-grain {
+  background:
+    radial-gradient(circle at 20% 10%, rgba(96, 165, 250, 0.10), transparent 28rem),
+    radial-gradient(circle at 80% 12%, rgba(248, 248, 245, 0.06), transparent 26rem),
+    #080808 !important;
+  color: #f4f4f5 !important;
+}
+
+body.dark .axiom-grain .text-\[\#101010\] {
+  color: #f4f4f5 !important;
+}
+
+body.dark .axiom-grain .text-\[\#5F6368\] {
+  color: rgba(244, 244, 245, 0.62) !important;
+}
+
+body.dark .axiom-grain .bg-\[\#F8F8F5\]\/85,
+body.dark .axiom-grain .bg-\[\#F8F8F5\]\/90,
+body.dark .axiom-grain .bg-\[\#F8F8F5\] {
+  background-color: rgba(24, 24, 27, 0.82) !important;
+}
+
+body.dark .axiom-grain .bg-white,
+body.dark .axiom-grain .bg-white\/35,
+body.dark .axiom-grain .bg-white\/40,
+body.dark .axiom-grain .bg-white\/45,
+body.dark .axiom-grain .bg-white\/55,
+body.dark .axiom-grain .bg-white\/60 {
+  background-color: rgba(39, 39, 42, 0.72) !important;
+  color: #f4f4f5 !important;
+}
+
+body.dark .axiom-grain .border-black\/10 {
+  border-color: rgba(255, 255, 255, 0.12) !important;
+}

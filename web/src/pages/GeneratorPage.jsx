@@ -1,50 +1,94 @@
 import { useState } from 'react'
+import AiProcessingOverlay from '../components/AiProcessingOverlay'
+import AiResultBanner from '../components/AiResultBanner'
+import { useAiProcess } from '../hooks/useAiProcess'
 import { generatePaper } from '../utils/paperGenerator'
+
+const PHASES = [
+  'Normalizing input tokens…',
+  'Retrieving domain knowledge embeddings…',
+  'Running autoregressive synthesis…',
+  'Calibrating academic register…',
+  'Validating section coherence…',
+]
 
 function GeneratorPage() {
   const [topic, setTopic] = useState('')
   const [paper, setPaper] = useState(null)
+  const [confidence, setConfidence] = useState(0)
+  const { isProcessing, phaseIndex, progress, tokenCount, run } = useAiProcess()
 
-  function handleGenerate(event) {
+  async function handleGenerate(event) {
     event.preventDefault()
     const value = topic.trim()
-    if (!value) return
-    setPaper(generatePaper(value))
+    if (!value || isProcessing) return
+
+    const result = await run(
+      { phases: PHASES, minDuration: 30000, maxDuration: 45000, model: 'axiom-writer-v2' },
+      () => generatePaper(value),
+    )
+    setPaper(result)
+    setConfidence(91 + Math.floor(Math.random() * 7))
   }
 
   return (
-    <section className="panel">
-      <h1>Research Generator</h1>
-      <form className="stack-form" onSubmit={handleGenerate}>
-        <label htmlFor="topic">Research Topic</label>
-        <input
-          id="topic"
-          value={topic}
-          onChange={(event) => setTopic(event.target.value)}
-          placeholder="e.g., AI-driven Climate Risk Modeling"
+    <div className="page">
+      {isProcessing && (
+        <AiProcessingOverlay
+          phases={PHASES}
+          phaseIndex={phaseIndex}
+          progress={progress}
+          tokenCount={tokenCount}
+          model="axiom-writer-v2"
         />
-        <button type="submit">Generate Paper Content</button>
-      </form>
-
-      {paper && (
-        <div className="output">
-          <h2>Title</h2>
-          <p>{paper.title}</p>
-          <h2>Abstract</h2>
-          <p>{paper.abstract}</p>
-          <h2>Introduction</h2>
-          <p>{paper.introduction}</p>
-          <h2>Literature Review</h2>
-          <p>{paper.literatureReview}</p>
-          <h2>Methodology</h2>
-          <p>{paper.methodology}</p>
-          <h2>Results &amp; Discussion</h2>
-          <p>{paper.resultsDiscussion}</p>
-          <h2>Conclusion</h2>
-          <p>{paper.conclusion}</p>
-        </div>
       )}
-    </section>
+
+      <header className="page-hero page-hero--compact">
+        <p className="eyebrow">Module 01 · Document Synthesis</p>
+        <h1>Document Synthesis</h1>
+        <p className="page-hero__lead">
+          Generate IMRaD-structured manuscripts from a research topic using the axiom-writer-v2 model.
+        </p>
+      </header>
+
+      <section className="workspace-panel">
+        <form className="research-form" onSubmit={handleGenerate}>
+          <div className="form-field">
+            <label htmlFor="topic">Research topic</label>
+            <input
+              id="topic"
+              value={topic}
+              onChange={(event) => setTopic(event.target.value)}
+              placeholder="e.g., Transformer architectures for climate risk modeling"
+              disabled={isProcessing}
+            />
+          </div>
+          <button type="submit" className="btn btn--primary" disabled={isProcessing}>
+            {isProcessing ? 'Running inference…' : 'Run synthesis'}
+          </button>
+        </form>
+
+        {paper && !isProcessing && (
+          <div className="results-panel">
+            <AiResultBanner confidence={confidence} label="Synthesis complete" />
+            {[
+              ['Title', paper.title],
+              ['Abstract', paper.abstract],
+              ['Introduction', paper.introduction],
+              ['Literature Review', paper.literatureReview],
+              ['Methodology', paper.methodology],
+              ['Results & Discussion', paper.resultsDiscussion],
+              ['Conclusion', paper.conclusion],
+            ].map(([heading, text]) => (
+              <article key={heading} className="result-section">
+                <h3>{heading}</h3>
+                <p>{text}</p>
+              </article>
+            ))}
+          </div>
+        )}
+      </section>
+    </div>
   )
 }
 

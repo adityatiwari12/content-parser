@@ -1,0 +1,12 @@
+node_modules/
+dist/
+.env
+*.db
+__pycache__/
+*.pyc
+.venv/
+venv/
+apps/api/axiom_lab.db
+.vercel/
+.DS_Store
+.vercel

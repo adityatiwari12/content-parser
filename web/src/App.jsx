@@ -3,6 +3,7 @@ import './App.css'
 import Layout from './components/Layout'
 import GeneratorPage from './pages/GeneratorPage'
 import HomePage from './pages/HomePage'
+import HowItWorksPage from './pages/HowItWorksPage'
 import ParserPage from './pages/ParserPage'
 import PlagiarismPage from './pages/PlagiarismPage'
 
@@ -11,6 +12,7 @@ function App() {
     <Routes>
       <Route element={<Layout />}>
         <Route path="/" element={<HomePage />} />
+        <Route path="/how-it-works" element={<HowItWorksPage />} />
         <Route path="/generator" element={<GeneratorPage />} />
         <Route path="/parser" element={<ParserPage />} />
         <Route path="/plagiarism-check" element={<PlagiarismPage />} />
